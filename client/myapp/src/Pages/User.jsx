@@ -1,41 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Argent Bank - Home Page</title>
-    <link rel="stylesheet" href="./css/main.css" />
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-  </head>
-  <body>
-    <nav className="main-nav">
-      <a className="main-nav-logo" href="./index.html">
-        <img
-          className="main-nav-logo-image"
-          src="./img/argentBankLogo.png"
-          alt="Argent Bank Logo"
-        />
-        <h1 className="sr-only">Argent Bank</h1>
-      </a>
-      <div>
-        <a className="main-nav-item" href="./user.html">
-          <i className="fa fa-user-circle"></i>
-          Tony
-        </a>
-        <a className="main-nav-item" href="./index.html">
-          <i className="fa fa-sign-out"></i>
-          Sign Out
-        </a>
-      </div>
-    </nav>
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMe } from "../redux/authThunks";
+import { selectAuth } from "../redux/auth.selector";
+import EditUser from "../components/EditUser";
+import { useState } from "react";
+
+function User() {
+  const token = localStorage.getItem("token");
+  const dispatch = useDispatch();
+  const { me } = useSelector(selectAuth);
+  const [isEditingMode, setIsEditingMode] = useState(false);
+
+  if (!token) {
+    window.location = "/";
+    return;
+  } else if (!me.userName) {
+    dispatch(fetchMe(token));
+  }
+
+  return (
     <main className="main bg-dark">
       <div className="header">
-        <h1>Welcome back<br />Tony Jarvis!</h1>
-        <button className="edit-button">Edit Name</button>
+        {isEditingMode && <h1>Edit user info</h1>}
+        {!isEditingMode && (
+          <>
+            <h1>
+              Welcome back
+              <br />
+              {me?.userName}
+            </h1>
+            <button
+              onClick={() => setIsEditingMode(true)}
+              className="edit-button"
+            >
+              Edit Name
+            </button>
+          </>
+        )}
       </div>
+      {isEditingMode && (
+        <div>
+          <EditUser
+            userName={me?.userName}
+            firstName={me?.firstName}
+            lastName={me?.lastName}
+            onCancel={() => setIsEditingMode(false)}
+          />
+        </div>
+      )}
       <h2 className="sr-only">Accounts</h2>
       <section className="account">
         <div className="account-content-wrapper">
@@ -68,8 +79,7 @@
         </div>
       </section>
     </main>
-    <footer className="footer">
-      <p className="footer-text">Copyright 2020 Argent Bank</p>
-    </footer>
-  </body>
-</html>
+  );
+}
+
+export default User;
