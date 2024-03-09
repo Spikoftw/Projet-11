@@ -26,7 +26,7 @@ function User() {
             <h1>
               Welcome back
               <br />
-              {me?.userName}
+              {me?.firstName} {me?.lastName}
             </h1>
             <button
               onClick={() => setIsEditingMode(true)}

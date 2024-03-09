@@ -118,7 +118,7 @@ paths:
             $ref: "#/definitions/TransactionListResponse"
         "500":
           description: Internal Server Error
-  /transaction/{id}:
+  /transaction/{transactionid}:
     get:
       security:
         - Bearer: []
@@ -127,7 +127,7 @@ paths:
       summary: Transaction details
       description: API for Transaction
       parameters:
-        - name: id
+        - name: transactionid
           in: path
           description: ID of transaction to return
           required: true
@@ -139,45 +139,34 @@ paths:
       responses:
         "200":
           description: Fetch Successfully
-          schema:
-            $ref: "#/definitions/TransactionDetailsResponse"
-        "500":
-          description: Internal Server Error
     patch:
       security:
         - Bearer: []
       tags:
         - Transaction Module
-      summary: Transaction edit
+      summary: Edit Transaction
       description: API for Transaction
       parameters:
-        - name: id
+        - name: transactionid
           in: path
-          description: ID of transaction to return
+          description: ID of transaction to edit
           required: true
           schema:
             type: integer
             format: int64
-        - name: category
-          in: body
-          description: category of the transaction
-          required: false
+        - in: body
+          name: body
+          description: Edit Transaction Payload
+          required: true
           schema:
-            type: string
-      produces:
-        - name: note
-          in: body
-          description: note of the transaction
-          required: false
-          schema:
-            type: string
+            $ref: "#/definitions/EditTransaction"
       produces:
         - application/json
       responses:
         "200":
-          description: Fetch Successfully
-          schema:
-            $ref: "#/definitions/TransactionDetailsResponse"
+          description: Edit Successfully
+        "400":
+          description: Invalid Fields
         "500":
           description: Internal Server Error
 securityDefinitions:
@@ -272,3 +261,15 @@ definitions:
       note:
         type: string
         description: Transaction note
+  EditTransaction:
+    type: object
+    properties:
+      category:
+        type: string
+        description: The new category for the transaction.
+      note:
+        type: string
+        description: The new note for the transaction.
+    required:
+      - category
+      - note

@@ -1,16 +1,25 @@
 import React from "react";
 import LogoArgentBank from "../img/argentBankLogo.png";
+import { fetchMe } from "../redux/authThunks";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectAuth } from "../redux/auth.selector";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect } from "react";
 import {
   faCircleUser,
   faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 
 const Header = () => {
-  const { isLogged } = useSelector(selectAuth);
+  const token = localStorage.getItem("token");
+  const dispatch = useDispatch();
+  const { isLogged, me } = useSelector(selectAuth);
+  useEffect(() => {
+    if (token) {
+      dispatch(fetchMe(token));
+    }
+  }, [dispatch, token]);
   const logout = () => {
     localStorage.removeItem("token");
     window.location = "/SignIn";
@@ -36,7 +45,7 @@ const Header = () => {
           <>
             <Link className="main-nav-item" to="/User">
               <FontAwesomeIcon icon={faCircleUser} />
-              <span> Tony</span>
+              <span> {me?.userName}</span>
             </Link>
             <Link className="main-nav-item" onClick={logout}>
               <FontAwesomeIcon icon={faRightFromBracket} />
