@@ -34,7 +34,7 @@ function EditUser({ userName, firstName, lastName, onCancel }) {
       <div className="input-wrapper">
         <label>
           Last name :
-          <input defaultValue={lastName} type="text" readOnl y />
+          <input defaultValue={lastName} type="text" readOnly />
         </label>
       </div>
       <div className="edit-btn_wrapper">
