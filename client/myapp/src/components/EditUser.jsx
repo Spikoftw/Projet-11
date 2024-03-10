@@ -3,14 +3,12 @@ import { useDispatch } from "react-redux";
 import { putMe } from "../redux/authThunks";
 
 function EditUser({ userName, firstName, lastName, onCancel }) {
-  //
   const [userNameInput, setUserName] = useState([userName]);
   const dispatch = useDispatch();
 
   const token = localStorage.getItem("token");
 
   const onSave = () => {
-    //
     dispatch(putMe(token, userNameInput));
     onCancel();
   };
@@ -23,7 +21,7 @@ function EditUser({ userName, firstName, lastName, onCancel }) {
           <input
             value={userNameInput}
             type="text"
-            onChange={(e) => setUserName(e.target.value)} //
+            onChange={(e) => setUserName(e.target.value)}
           />
         </label>
       </div>
