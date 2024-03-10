@@ -19,10 +19,10 @@ const Header = () => {
     if (token) {
       dispatch(fetchMe(token));
     }
-  }, [dispatch, token]);
+  }, [token]);
   const logout = () => {
     localStorage.removeItem("token");
-    window.location = "/SignIn";
+    window.location = "/";
   };
   return (
     <nav className="main-nav">

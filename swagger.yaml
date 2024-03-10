@@ -109,6 +109,17 @@ paths:
         - Transaction Module
       summary: Transaction list
       description: API for Transaction
+      parameters:
+        - name: month
+          in: query
+          description: Month for transactions (format YYYY-MM). If not provided, defaults to current month.
+          required: false
+          type: string
+        - name: account
+          in: query
+          description: Account ID to filter transactions.
+          required: false
+          type: string
       produces:
         - application/json
       responses:
@@ -131,9 +142,8 @@ paths:
           in: path
           description: ID of transaction to return
           required: true
-          schema:
-            type: integer
-            format: int64
+          type: integer
+          format: int
       produces:
         - application/json
       responses:
@@ -151,9 +161,8 @@ paths:
           in: path
           description: ID of transaction to edit
           required: true
-          schema:
-            type: integer
-            format: int64
+          type: integer
+          format: int64
         - in: body
           name: body
           description: Edit Transaction Payload
@@ -169,6 +178,7 @@ paths:
           description: Invalid Fields
         "500":
           description: Internal Server Error
+
 securityDefinitions:
   Bearer:
     type: apiKey
@@ -225,42 +235,22 @@ definitions:
       userName:
         type: string
   TransactionListResponse:
-    properties:
-      date:
-        type: string
-        description: Transaction date
-      description:
-        type: string
-        description: Transaction description
-      amount:
-        type: integer
-        description: Transaction amount
-      balance:
-        type: integer
-        description: Transaction balance
-  TransactionDetailsResponse:
-    properties:
-      date:
-        type: string
-        description: Transaction date
-      description:
-        type: string
-        description: Transaction description
-      amount:
-        type: integer
-        description: Transaction amount
-      balance:
-        type: integer
-        description: Transaction balance
-      transactionType:
-        type: string
-        description: Transaction transactionType
-      category:
-        type: string
-        description: Transaction category
-      note:
-        type: string
-        description: Transaction note
+    type: array
+    items:
+      type: object
+      properties:
+        date:
+          type: string
+          description: Transaction date
+        description:
+          type: string
+          description: Transaction description
+        amount:
+          type: integer
+          description: Transaction amount
+        balance:
+          type: integer
+          description: Transaction balance
   EditTransaction:
     type: object
     properties:

@@ -15,31 +15,52 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     loginStart: (state) => {
-      state.isLoading = true;
-      state.hasError = false;
+      return {
+        ...state,
+        isLoading: true,
+        hasError: false,
+      };
     },
     loginSuccess: (state, action) => {
-      state.isLoading = false;
-      state.isLogged = true;
-      state.token = action.payload.token;
-      state.me = action.payload.me;
+      return {
+        ...state,
+        isLoading: false,
+        isLogged: true,
+        token: action.payload.token,
+        me: action.payload.me,
+      };
     },
     loginFailure: (state) => {
-      state.isLoading = false;
-      state.hasError = true;
+      return {
+        ...state,
+        isLoading: false,
+        hasError: true,
+      };
     },
     editingStart: (state) => {
-      state.isLoading = true;
-      state.hasError = false;
+      return {
+        ...state,
+        isLoading: true,
+        hasError: false,
+      };
     },
     editingSuccess: (state, action) => {
-      state.isEditing = false;
-      state.isLogged = true;
-      state.me.userName = action.payload.userName;
+      return {
+        ...state,
+        isEditing: false,
+        isLogged: true,
+        me: {
+          ...state.me,
+          userName: action.payload.userName,
+        },
+      };
     },
     editingFailure: (state) => {
-      state.isEditing = false;
-      state.editingHasError = true;
+      return {
+        ...state,
+        isEditing: false,
+        editingHasError: true,
+      };
     },
   },
 });
